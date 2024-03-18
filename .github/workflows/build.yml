@@ -80,14 +80,10 @@ jobs:
           cairo-devel \
           soxr-devel \
           wayland-devel \
-          wayland-protocols-devel \
-          wget
-
+          wayland-protocols-devel
+          
     - name: Build & package
       run: |
-        mkdir -p ~/rpmbuild/SOURCES
-        wget https://pub.freerdp.com/releases/freerdp-$FREERDP.tar.bz2        
-        mv freerdp-$FREERDP.tar.bz2 ~/rpmbuild/SOURCES/
         rpmbuild -ba freerdp.spec
 
     - name: Upload Package
