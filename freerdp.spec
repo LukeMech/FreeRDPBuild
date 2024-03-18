@@ -16,14 +16,14 @@
 # do not require our own libs
 %global __requires_exclude ^(libfreerdp.*|libwinpr|librdtk|libuwac).*$
 
-Name:           freerdp-nightly
+Name:           freerdp
 Version:        3.4.0
 Release:        0
 License:        ASL 2.0
 Summary:        Free implementation of the Remote Desktop Protocol (RDP)
 Url:            http://www.freerdp.com
 Group:          Productivity/Networking/Other
-Source:         freerdp-%{version}.tar.bz2
+Source:         ${name}-%{version}.tar.bz2
 BuildRequires: clang
 BuildRequires: cmake >= 3.13.0
 BuildRequires: libxkbfile-devel
