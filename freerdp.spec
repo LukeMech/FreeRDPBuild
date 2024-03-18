@@ -31,7 +31,7 @@
 %global build_type_safety_c 2
 
 Name:           freerdp
-Version:        3.1.0
+Version:        3.3.0
 Release:        1%{?dist}
 Epoch:          2
 Summary:        Free implementation of the Remote Desktop Protocol (RDP)
