@@ -83,19 +83,9 @@ jobs:
           wayland-protocols-devel \
           wget
 
-    - name: Clone FreeRDP Repository
-      run: git clone --depth 1 https://github.com/freerdp/freerdp.git
-
     - name: Build & package
       run: |
-        cd freerdp/packaging/rpm
-        sh ../scripts/*rpm*.sh
-        wget https://pub.freerdp.com/releases/freerdp-$FREERDP.tar.bz2
-        
-        mv freerdp-nightly.spec freerdp.spec
-        sed -i "/^Version:/ s/.*/Version:   $FREERDP/" freerdp.spec
-        sed -i 's/freerdp-nightly/freerdp/g' freerdp.spec
-        
+        wget https://pub.freerdp.com/releases/freerdp-$FREERDP.tar.bz2        
         rpmbuild -ba freerdp.spec
 
     - name: Upload Package
