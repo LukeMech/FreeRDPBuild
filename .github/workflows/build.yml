@@ -22,60 +22,8 @@ jobs:
 
     - name: Install Build Dependencies
       run: |      
-        dnf install -y \
-          dbus-glib-devel \
-          rpm-build \
-          ninja-build \
-          cups-devel \
-          systemd-devel \
-          libuuid-devel \
-          pulseaudio-libs-devel \
-          gcc-c++ libXrandr-devel \
-          gsm-devel \
-          gcc \
-          cmake \
-          ccache \
-          clang \
-          git-clang-format \
-          pam-devel \
-          fuse3-devel \
-          ffmpeg-free-devel \
-          opus-devel \
-          lame-devel \
-          ocl-icd-devel \
-          docbook-style-xsl \
-          openssl-devel \
-          libasan \
-          libX11-devel \
-          libXext-devel \
-          libXinerama-devel \
-          libXcursor-devel \
-          libXi-devel \
-          libXdamage-devel \
-          libXv-devel \
-          libxkbfile-devel \
-          alsa-lib-devel \
-          openh264-devel \
-          libavcodec-free-devel \
-          libavformat-free-devel \
-          libavutil-free-devel \
-          libswresample-free-devel \
-          libswscale-free-devel \
-          libusb1-devel \
-          uriparser-devel \
-          uuid-devel \
-          SDL2-devel \
-          SDL2_image-devel \
-          SDL2_ttf-devel \
-          pkcs11-helper-devel \
-          pcsc-lite-devel \
-          webkit2gtk4.0-devel \
-          krb5-devel \
-          cjson-devel \
-          cairo-devel \
-          soxr-devel \
-          wayland-devel \
-          wayland-protocols-devel
+        dnf install -y dnf-plugins-core
+        dnf builddep freerdp.spec
           
     - name: Build & package
       run: |
