@@ -24,7 +24,7 @@ jobs:
     - name: Install Build Dependencies
       run: |
         if [ "${{ matrix.os }}" != "ubuntu" ]; then
-          sudo dnf install -y \
+          dnf install -y \
             ninja-build \
             rpm-build \
             git-core \
@@ -91,8 +91,8 @@ jobs:
             meson \
             meson-libs
         else
-          sudo apt update
-          sudo apt install -y \
+          apt update
+          apt install -y \
             ninja-build \
             build-essential \
             git-core \
