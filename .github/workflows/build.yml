@@ -1,6 +1,7 @@
 name: Build Packages
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - main
@@ -149,7 +150,6 @@ jobs:
           -DWITH_FFMPEG=ON \
           -DWITH_SWSCALE=ON \
           -DWITH_DSP_FFMPEG=ON
-          -DWITH_WEBVIEW=OFF \
           .
         cmake --build freerdp-build
         cmake --install freerdp-build
