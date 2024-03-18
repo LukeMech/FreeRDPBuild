@@ -143,37 +143,11 @@ jobs:
     - name: Clone FreeRDP Repository
       run: git clone --depth 1 https://github.com/freerdp/freerdp.git
 
-    - name: Build FreeRDP
-      run: |
-        cmake -GNinja \
-          -B freerdp-build \
-          -S freerdp \
-          -DCMAKE_BUILD_TYPE=Release \
-          -DWITH_SERVER=ON \
-          -DWITH_SAMPLE=ON \
-          -DWITH_FFMPEG=ON \
-          -DWITH_SWSCALE=ON \
-          -DWITH_DSP_FFMPEG=ON \
-          -DWITH_PLATFORM_SERVER=OFF \
-          -DUSE_UNWIND=OFF \
-          -DWITH_WEBVIEW=OFF
-        cmake --build freerdp-build
-        
     - name: Package
       run: |
-        ls
-        echo "! freerdp:"
-        ls freerdp
-        echo "! Freedrp/packaging:"
-        ls freerdp/packaging || true
-
-        echo "! Freerdp-build:"
-        ls freerdp-build
-
-        
         if [ "${{ matrix.os }}" != "ubuntu" ]; then
           cd freerdp/packaging/rpm
-          rpmbuild -ba freerdp.spec
+          rpmbuild -ba freerdp-nightly.spec
         else
           cd freerdp/packaging/deb
           dpkg-buildpackage -us -uc -b
