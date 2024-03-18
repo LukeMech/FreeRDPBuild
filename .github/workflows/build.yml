@@ -29,6 +29,7 @@ jobs:
         ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
       
         if [ "${{ matrix.os }}" != "ubuntu" ]; then
+          dnf config-manager --enable fedora-cisco-openh264
           dnf -y install https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm
           dnf -y install https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
           dnf install -y --allowerasing \
