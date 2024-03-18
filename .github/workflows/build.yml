@@ -22,11 +22,16 @@ jobs:
 
     - name: Install Build Dependencies
       run: |      
-        dnf install -y dnf-plugins-core
+        dnf install -y \
+          dnf-plugins-core \
+          fedora-packager \
+          rpmdevtools \
+          gcc
+          
         dnf builddep -y freerdp.spec
           
     - name: Build & package
-      run: |
+      run: |        
         rpmbuild -ba freerdp.spec
 
     - name: Upload Package
@@ -34,4 +39,4 @@ jobs:
       with:
         name: ${{ matrix.os }}-freedrp
         path: |
-          **/*.rpm
+          ~/rpmbuild/RPMS/**/*.rpm
