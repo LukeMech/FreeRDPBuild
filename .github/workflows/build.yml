@@ -24,6 +24,10 @@ jobs:
 
     - name: Install Build Dependencies
       run: |
+        # Set timezone to skip configuring in apt
+        ENV TZ=Europe/Warsaw
+        RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+      
         if [ "${{ matrix.os }}" != "ubuntu" ]; then
           dnf install -y \
             rpm-build \
@@ -151,15 +155,20 @@ jobs:
           -DWITH_SWSCALE=ON \
           -DWITH_DSP_FFMPEG=ON
         cmake --build freerdp-build
-        cmake --install freerdp-build
-
+        
     - name: Package
       run: |
+        ls
+        echo "! FreeDRP:"
+        ls freedrp
+        echo "! Freedrp/packaging:"
+        ls freedrp/packaging
+        
         if [ "${{ matrix.os }}" != "ubuntu" ]; then
-          cd packaging/rpm
+          cd freerdp/packaging/rpm
           rpmbuild -ba freerdp.spec
         else
-          cd packaging/deb
+          cd freerdp/packaging/deb
           dpkg-buildpackage -us -uc -b
         fi
 
@@ -168,5 +177,5 @@ jobs:
       with:
         name: ${{ matrix.os }}-freedrp
         path: |
-          packaging/**/*.deb
-          packaging/**/*.rpm
+          **/*.deb
+          **/*.rpm
