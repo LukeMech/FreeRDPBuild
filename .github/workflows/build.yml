@@ -33,12 +33,16 @@ jobs:
         spectool -g -R freerdp.spec        
           
     - name: Build & package
+      id: version
       run: |        
+        release=$(echo "${{ matrix.os }}" | cut -d ":" -f 2)
+        echo "::set-output name=release::$release"
+        
         rpmbuild -ba freerdp.spec
-
+        
     - name: Upload Package
       uses: actions/upload-artifact@v4
       with:
-        name: ${{ matrix.os }}-freedrp
+        name: freerdp-f${{ steps.version.outputs.release }}
         path: |
           ~/rpmbuild/RPMS/**/*.rpm
