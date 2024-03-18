@@ -91,7 +91,7 @@ jobs:
         cd freerdp/packaging/rpm
         sh ../scripts/*rpm*.sh
         wget https://pub.freerdp.com/releases/freerdp-$FREERDP.tar.bz2
-        sed -i '/^Version:/ s/.*/Version:   $FREERDP/' freerdp-nightly.spec
+        sed -i "/^Version:/ s/.*/Version:   $FREERDP/" freerdp-nightly.spec
         rpmbuild -ba freerdp-nightly.spec
 
     - name: Upload Package
