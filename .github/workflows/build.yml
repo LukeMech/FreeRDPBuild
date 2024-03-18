@@ -29,11 +29,6 @@ jobs:
         ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
       
         if [ "${{ matrix.os }}" != "ubuntu" ]; then
-          dnf -y install dnf-plugins-core
-          dnf config-manager --enable fedora-cisco-openh264
-          dnf -y install https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm
-          dnf -y install https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
-
           dnf install -y --allowerasing \
             dbus-glib-devel \
             rpm-build \
@@ -51,7 +46,7 @@ jobs:
             git-clang-format \
             pam-devel \
             fuse3-devel \
-            ffmpeg-devel \
+            ffmpeg-free-devel \
             opus-devel \
             lame-devel \
             ocl-icd-devel \
