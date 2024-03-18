@@ -12,7 +12,7 @@ jobs:
     name: Build Packages
     strategy:
       matrix:
-        os: [ubuntu, fedora:39, fedora:40]
+        os: ["ubuntu", "fedora:39", "fedora:40"]
 
     runs-on: ubuntu-latest
     container: ${{ if matrix.os != 'ubuntu' matrix.os }}
