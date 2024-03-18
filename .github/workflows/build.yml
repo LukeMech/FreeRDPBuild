@@ -162,10 +162,14 @@ jobs:
     - name: Package
       run: |
         ls
-        echo "! FreeDRP:"
-        ls freedrp
+        echo "! freerdp:"
+        ls freerdp
         echo "! Freedrp/packaging:"
-        ls freedrp/packaging
+        ls freerdp/packaging || true
+
+        echo "! Freerdp-build:"
+        ls freerdp-build
+
         
         if [ "${{ matrix.os }}" != "ubuntu" ]; then
           cd freerdp/packaging/rpm
