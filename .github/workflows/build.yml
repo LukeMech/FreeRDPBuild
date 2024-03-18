@@ -27,7 +27,7 @@ jobs:
 
     - name: Install Build Dependencies
       run: |      
-        dnf install -y --allowerasing \
+        dnf install -y \
           dbus-glib-devel \
           rpm-build \
           ninja-build \
