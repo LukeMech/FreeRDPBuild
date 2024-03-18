@@ -23,7 +23,7 @@ jobs:
     - name: Install Build Dependencies
       run: |      
         dnf install -y dnf-plugins-core
-        dnf builddep freerdp.spec
+        dnf builddep -y freerdp.spec
           
     - name: Build & package
       run: |
