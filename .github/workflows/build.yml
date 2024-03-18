@@ -140,8 +140,9 @@ jobs:
 
     - name: Build FreeRDP
       run: |
-        cd freerdp
         cmake -GNinja \
+          -B freerdp-build \
+          -S freerdp \
           -DCMAKE_BUILD_TYPE=Release \
           -DWITH_SERVER=ON \
           -DWITH_SAMPLE=ON \
