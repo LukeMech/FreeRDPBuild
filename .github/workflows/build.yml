@@ -150,13 +150,15 @@ jobs:
     - name: Clone FreeRDP Repository
       run: git clone --depth 1 https://github.com/freerdp/freerdp.git
 
-    - name: Package
+    - name: Build & package
       run: |
         if [ "${{ matrix.os }}" != "ubuntu" ]; then
           cd freerdp/packaging/rpm
+          sh ../scripts/*rpm*.sh
           rpmbuild -ba freerdp-nightly.spec
         else
           cd freerdp/packaging/deb
+          sh ../scripts/*deb*.sh
           dpkg-buildpackage -us -uc -b
         fi
 
