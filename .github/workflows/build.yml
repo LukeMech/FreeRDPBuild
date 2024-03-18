@@ -1,5 +1,8 @@
 name: Build Packages
 
+env:
+  FREERDP: "3.4.0"
+  
 on:
   workflow_dispatch:
   push:
@@ -13,7 +16,7 @@ jobs:
     name: Build Packages
     strategy:
       matrix:
-        os: ["ubuntu", "fedora:39", "fedora:40"]
+        os: ["fedora:39", "fedora:40"]
 
     runs-on: ubuntu-latest
     container: ${{ matrix.os }}
@@ -23,149 +26,77 @@ jobs:
       uses: actions/checkout@v4
 
     - name: Install Build Dependencies
-      run: |
-        # Set timezone to skip configuring in apt
-        export TZ=Europe/Warsaw
-        ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
-      
-        if [ "${{ matrix.os }}" != "ubuntu" ]; then
-          dnf install -y --allowerasing \
-            dbus-glib-devel \
-            rpm-build \
-            ninja-build \
-            cups-devel \
-            systemd-devel \
-            libuuid-devel \
-            pulseaudio-libs-devel \
-            gcc-c++ libXrandr-devel \
-            gsm-devel \
-            gcc \
-            cmake \
-            ccache \
-            clang \
-            git-clang-format \
-            pam-devel \
-            fuse3-devel \
-            ffmpeg-free-devel \
-            opus-devel \
-            lame-devel \
-            ocl-icd-devel \
-            docbook-style-xsl \
-            openssl-devel \
-            libasan \
-            libX11-devel \
-            libXext-devel \
-            libXinerama-devel \
-            libXcursor-devel \
-            libXi-devel \
-            libXdamage-devel \
-            libXv-devel \
-            libxkbfile-devel \
-            alsa-lib-devel \
-            openh264-devel \
-            libavcodec-free-devel \
-            libavformat-free-devel \
-            libavutil-free-devel \
-            libswresample-free-devel \
-            libswscale-free-devel \
-            libusb1-devel \
-            uriparser-devel \
-            uuid-devel \
-            SDL2-devel \
-            SDL2_image-devel \
-            SDL2_ttf-devel \
-            pkcs11-helper-devel \
-            pcsc-lite-devel \
-            webkit2gtk4.0-devel \
-            krb5-devel \
-            cjson-devel \
-            cairo-devel \
-            soxr-devel \
-            wayland-devel \
-            wayland-protocols-devel
-        else
-          apt update
-          apt install -y \
-            ninja-build \
-            build-essential \
-            git-core \
-            debhelper \
-            cdbs \
-            dpkg-dev \
-            cmake \
-            cmake-curses-gui \
-            clang-format \
-            ccache \
-            opencl-c-headers \
-            ocl-icd-opencl-dev \
-            libmp3lame-dev \
-            libopus-dev \
-            libsoxr-dev \
-            libpam0g-dev \
-            pkg-config \
-            xmlto \
-            libssl-dev \
-            docbook-xsl \
-            xsltproc \
-            libxkbfile-dev \
-            libx11-dev \
-            libwayland-dev \
-            libxrandr-dev \
-            libxi-dev \
-            libxrender-dev \
-            libxext-dev \
-            libxinerama-dev \
-            libxfixes-dev \
-            libxcursor-dev \
-            libxv-dev \
-            libxdamage-dev \
-            libxtst-dev \
-            libcups2-dev \
-            libpcsclite-dev \
-            libasound2-dev \
-            libpulse-dev \
-            libgsm1-dev \
-            libusb-1.0-0-dev \
-            uuid-dev \
-            libxml2-dev \
-            libfaad-dev \
-            libfaac-dev \
-            libsdl2-dev \
-            libsdl2-ttf-dev \
-            libcjson-dev \
-            libpkcs11-helper-dev \
-            liburiparser-dev \
-            libkrb5-dev \
-            libsystemd-dev \
-            libfuse3-dev \
-            libswscale-dev \
-            libcairo2-dev \
-            libavutil-dev \
-            libavcodec-dev \
-            libswresample-dev \
-            libwebkit2gtk-4.0-dev \
-            libpkcs11-helper1-dev
-        fi
+      run: |      
+        dnf install -y --allowerasing \
+          dbus-glib-devel \
+          rpm-build \
+          ninja-build \
+          cups-devel \
+          systemd-devel \
+          libuuid-devel \
+          pulseaudio-libs-devel \
+          gcc-c++ libXrandr-devel \
+          gsm-devel \
+          gcc \
+          cmake \
+          ccache \
+          clang \
+          git-clang-format \
+          pam-devel \
+          fuse3-devel \
+          ffmpeg-free-devel \
+          opus-devel \
+          lame-devel \
+          ocl-icd-devel \
+          docbook-style-xsl \
+          openssl-devel \
+          libasan \
+          libX11-devel \
+          libXext-devel \
+          libXinerama-devel \
+          libXcursor-devel \
+          libXi-devel \
+          libXdamage-devel \
+          libXv-devel \
+          libxkbfile-devel \
+          alsa-lib-devel \
+          openh264-devel \
+          libavcodec-free-devel \
+          libavformat-free-devel \
+          libavutil-free-devel \
+          libswresample-free-devel \
+          libswscale-free-devel \
+          libusb1-devel \
+          uriparser-devel \
+          uuid-devel \
+          SDL2-devel \
+          SDL2_image-devel \
+          SDL2_ttf-devel \
+          pkcs11-helper-devel \
+          pcsc-lite-devel \
+          webkit2gtk4.0-devel \
+          krb5-devel \
+          cjson-devel \
+          cairo-devel \
+          soxr-devel \
+          wayland-devel \
+          wayland-protocols-devel \
+          wget
 
     - name: Clone FreeRDP Repository
       run: git clone --depth 1 https://github.com/freerdp/freerdp.git
 
     - name: Build & package
       run: |
-        if [ "${{ matrix.os }}" != "ubuntu" ]; then
-          cd freerdp/packaging/rpm
-          sh ../scripts/*rpm*.sh
-          rpmbuild -ba freerdp-nightly.spec
-        else
-          cd freerdp/packaging/deb
-          sh ../scripts/*deb*.sh
-          dpkg-buildpackage -us -uc -b
-        fi
+        cd freerdp/packaging/rpm
+        sh ../scripts/*rpm*.sh
+        wget https://pub.freerdp.com/releases/freerdp-$FREERDP.tar.bz2
+        sed -i '/^Version:/ s/.*/Version:   $FREERDP/' freerdp-nightly.spec
+        rpmbuild -ba freerdp-nightly.spec
 
     - name: Upload Package
       uses: actions/upload-artifact@v4
       with:
         name: ${{ matrix.os }}-freedrp
         path: |
-          **/*.deb
           **/*.rpm
