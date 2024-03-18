@@ -27,13 +27,13 @@ jobs:
           fedora-packager \
           rpmdevtools \
           gcc
-          
         dnf builddep -y freerdp.spec
+        
+        rpmdev-setuptree
+        spectool -g -R freerdp.spec        
           
     - name: Build & package
       run: |        
-        rpmdev-setuptree
-        spectool -g -R freerdp.spec        
         rpmbuild -ba freerdp.spec
 
     - name: Upload Package
