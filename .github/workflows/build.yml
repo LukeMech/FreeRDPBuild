@@ -36,7 +36,7 @@ jobs:
       id: version
       run: |        
         release=$(echo "${{ matrix.os }}" | cut -d ":" -f 2)
-        echo "::set-output name=release::$release"
+        echo "release=$release" >> $GITHUB_OUTPUT
         
         rpmbuild -ba freerdp.spec
         
@@ -45,4 +45,4 @@ jobs:
       with:
         name: freerdp-f${{ steps.version.outputs.release }}
         path: |
-          ~/rpmbuild/RPMS/**/*.rpm
+          ~/rpmbuild/RPMS/x86_64/*.rpm
