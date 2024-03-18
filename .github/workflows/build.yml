@@ -25,71 +25,52 @@ jobs:
       run: |
         if [ "${{ matrix.os }}" != "ubuntu" ]; then
           dnf install -y \
-            ninja-build \
             rpm-build \
-            git-core \
-            cmake \
-            clang-format \
-            ccache \
-            opencl-headers \
-            ocl-icd-devel \
-            lame-devel \
-            opus-devel \
-            soxr-devel \
-            pam-devel \
-            pkgconfig \
-            xmlto \
-            openssl-devel \
-            docbook-style-xsl \
-            libxkbfile-devel \
-            libx11-devel \
-            libwayland-devel \
-            libxrandr-devel \
-            libXi-devel \
-            libxrender-devel \
-            libxext-devel \
-            libxinerama-devel \
-            libxfixes-devel \
-            libxcursor-devel \
-            libXv-devel \
-            libxdamage-devel \
-            libXtst-devel \
+            ninja-build \
             cups-devel \
-            libpcsclite-devel \
-            alsa-lib-devel \
-            pulseaudio-libs-devel \
-            gsm-devel \
-            libusb-devel \
+            systemd-devel \
             libuuid-devel \
-            libxml2-devel \
-            faad2-devel \
-            faac-devel \
+            pulseaudio-libs-devel \
+            gcc-c++ libXrandr-devel \
+            gsm-devel \
+            gcc \
+            cmake \
+            ccache \
+            git-clang-format \
+            pam-devel \
+            fuse3-devel \
+            opus-devel \
+            lame-devel \
+            ocl-icd-devel \
+            docbook-style-xsl \
+            openssl-devel \
+            libX11-devel \
+            libXext-devel \
+            libXinerama-devel \
+            libXcursor-devel \
+            libXi-devel \
+            libXdamage-devel \
+            libXv-devel \
+            libxkbfile-devel \
+            alsa-lib-devel \
+            openh264-devel \
+            libavcodec-free-devel \
+            libavformat-free-devel \
+            libavutil-free-devel \
+            libswresample-free-devel \
+            libswscale-free-devel \
+            libusb1-devel \
+            uriparser-devel \
             SDL2-devel \
             SDL2_ttf-devel \
-            cJSON-devel \
-            libpkcs11-helper-devel \
-            uriparser-devel \
+            pkcs11-helper-devel \
+            webkit2gtk4.0-devel \
             krb5-devel \
-            systemd-devel \
-            fuse-devel \
-            ffmpeg-devel \
-            libswscale-devel \
+            cjson-devel \
             cairo-devel \
-            libavcodec-devel \
-            libavutil-devel \
-            libswresample-devel \
-            webkit2gtk3-devel \
-            cairo-devel \
-            libcairo-devel \
-            cairo-gobject-devel \
-            libgudev-devel \
-            sqlite-devel \
-            libgccjit-devel \
-            libunwind-devel \
-            mesa-libGL-devel \
-            wayland-protocols-devel \
-            meson \
-            meson-libs
+            soxr-devel \
+            wayland-devel \
+            wayland-protocols-devel
         else
           apt update
           apt install -y \
