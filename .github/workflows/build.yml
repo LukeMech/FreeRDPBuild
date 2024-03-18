@@ -15,7 +15,7 @@ jobs:
         os: ["ubuntu", "fedora:39", "fedora:40"]
 
     runs-on: ubuntu-latest
-    container: matrix.os
+    container: ${{ matrix.os }}
     
     steps:
     - name: Checkout Repository
