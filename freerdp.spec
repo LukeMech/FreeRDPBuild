@@ -1,4 +1,4 @@
-# got from https://src.fedoraproject.org/rpms/freerdp/tree/
+# got from https://src.fedoraproject.org/rpms/freerdp/tree/ and modified a bit
 
 # Can be rebuilt with FFmpeg/OpenH264 support enabled by passing
 # "--with=ffmpeg", or "--with=openh264" to mock/rpmbuild; or by globally
@@ -38,7 +38,7 @@ Summary:        Free implementation of the Remote Desktop Protocol (RDP)
 License:        Apache-2.0
 URL:            http://www.freerdp.com/
 
-Source0:        https://github.com/FreeRDP/FreeRDP/archive/%{version}/FreeRDP-%{version}.tar.gz
+Source0:        https://pub.freerdp.com/releases/freerdp-%{version}.tar.gz
 
 BuildRequires:  gcc
 BuildRequires:  gcc-c++
