@@ -1,0 +1,193 @@
+name: Build Packages
+
+on:
+  push:
+    branches:
+      - main
+  schedule:
+    - cron: '0 0 * * 0'  # Run every Sunday at midnight UTC
+
+jobs:
+  build:
+    name: Build Packages
+    strategy:
+      matrix:
+        os: [ubuntu, fedora:39, fedora:40]
+
+    runs-on: ubuntu-latest
+    container: ${{ if matrix.os != 'ubuntu' matrix.os }}
+    
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v4
+
+    - name: Install Build Dependencies
+      run: |
+        if [ "${{ matrix.os }}" != "ubuntu" ]; then
+          sudo dnf install -y \
+            ninja-build \
+            rpm-build \
+            git-core \
+            cmake \
+            clang-format \
+            ccache \
+            opencl-headers \
+            ocl-icd-devel \
+            lame-devel \
+            opus-devel \
+            soxr-devel \
+            pam-devel \
+            pkgconfig \
+            xmlto \
+            openssl-devel \
+            docbook-style-xsl \
+            libxkbfile-devel \
+            libx11-devel \
+            libwayland-devel \
+            libxrandr-devel \
+            libXi-devel \
+            libxrender-devel \
+            libxext-devel \
+            libxinerama-devel \
+            libxfixes-devel \
+            libxcursor-devel \
+            libXv-devel \
+            libxdamage-devel \
+            libXtst-devel \
+            cups-devel \
+            libpcsclite-devel \
+            alsa-lib-devel \
+            pulseaudio-libs-devel \
+            gsm-devel \
+            libusb-devel \
+            libuuid-devel \
+            libxml2-devel \
+            faad2-devel \
+            faac-devel \
+            SDL2-devel \
+            SDL2_ttf-devel \
+            cJSON-devel \
+            libpkcs11-helper-devel \
+            uriparser-devel \
+            krb5-devel \
+            systemd-devel \
+            fuse-devel \
+            ffmpeg-devel \
+            libswscale-devel \
+            cairo-devel \
+            libavcodec-devel \
+            libavutil-devel \
+            libswresample-devel \
+            webkit2gtk3-devel \
+            cairo-devel \
+            libcairo-devel \
+            cairo-gobject-devel \
+            libgudev-devel \
+            sqlite-devel \
+            libgccjit-devel \
+            libunwind-devel \
+            mesa-libGL-devel \
+            wayland-protocols-devel \
+            meson \
+            meson-libs
+        else
+          sudo apt update
+          sudo apt install -y \
+            ninja-build \
+            build-essential \
+            git-core \
+            debhelper \
+            cdbs \
+            dpkg-dev \
+            cmake \
+            cmake-curses-gui \
+            clang-format \
+            ccache \
+            opencl-c-headers \
+            ocl-icd-opencl-dev \
+            libmp3lame-dev \
+            libopus-dev \
+            libsoxr-dev \
+            libpam0g-dev \
+            pkg-config \
+            xmlto \
+            libssl-dev \
+            docbook-xsl \
+            xsltproc \
+            libxkbfile-dev \
+            libx11-dev \
+            libwayland-dev \
+            libxrandr-dev \
+            libxi-dev \
+            libxrender-dev \
+            libxext-dev \
+            libxinerama-dev \
+            libxfixes-dev \
+            libxcursor-dev \
+            libxv-dev \
+            libxdamage-dev \
+            libxtst-dev \
+            libcups2-dev \
+            libpcsclite-dev \
+            libasound2-dev \
+            libpulse-dev \
+            libgsm1-dev \
+            libusb-1.0-0-dev \
+            uuid-dev \
+            libxml2-dev \
+            libfaad-dev \
+            libfaac-dev \
+            libsdl2-dev \
+            libsdl2-ttf-dev \
+            libcjson-dev \
+            libpkcs11-helper-dev \
+            liburiparser-dev \
+            libkrb5-dev \
+            libsystemd-dev \
+            libfuse3-dev \
+            libswscale-dev \
+            libcairo2-dev \
+            libavutil-dev \
+            libavcodec-dev \
+            libswresample-dev \
+            libwebkit2gtk-4.0-dev \
+            libpkcs11-helper1-dev
+        fi
+
+    - name: Clone FreeRDP Repository
+      run: git clone --depth 1 https://github.com/freerdp/freerdp.git
+
+    - name: Build FreeRDP
+      run: |
+        cd freerdp
+        cmake -GNinja \
+          -DCMAKE_BUILD_TYPE=Release \
+          -DWITH_SERVER=ON \
+          -DWITH_SAMPLE=ON \
+          -DWITH_FFMPEG=ON \
+          -DWITH_SWSCALE=ON \
+          -DWITH_DSP_FFMPEG=ON
+          -DWITH_PLATFORM_SERVER=OFF \
+          -DUSE_UNWIND=OFF \
+          -DWITH_WEBVIEW=OFF \
+          .
+        cmake --build freerdp-build
+        cmake --install freerdp-build
+
+    - name: Package
+      run: |
+        if [ "${{ matrix.os }}" != "ubuntu" ]; then
+          cd packaging/rpm
+          rpmbuild -ba freerdp.spec
+        else
+          cd packaging/deb
+          dpkg-buildpackage -us -uc -b
+        fi
+
+    - name: Upload Package
+      uses: actions/upload-artifact@v2
+      with:
+        name: ${{ matrix.os }}-freedrp
+        path: |
+          packaging/**/*.deb
+          packaging/**/*.rpm
