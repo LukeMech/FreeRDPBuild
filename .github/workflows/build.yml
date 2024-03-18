@@ -25,8 +25,8 @@ jobs:
     - name: Install Build Dependencies
       run: |
         # Set timezone to skip configuring in apt
-        ENV TZ=Europe/Warsaw
-        RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+        export TZ=Europe/Warsaw
+        ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
       
         if [ "${{ matrix.os }}" != "ubuntu" ]; then
           dnf install -y \
