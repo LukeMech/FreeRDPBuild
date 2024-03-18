@@ -1,3 +1,5 @@
+# got from https://src.fedoraproject.org/rpms/freerdp/tree/
+
 # Can be rebuilt with FFmpeg/OpenH264 support enabled by passing
 # "--with=ffmpeg", or "--with=openh264" to mock/rpmbuild; or by globally
 # setting these variables:
