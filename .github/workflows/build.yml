@@ -150,7 +150,6 @@ jobs:
           -DWITH_FFMPEG=ON \
           -DWITH_SWSCALE=ON \
           -DWITH_DSP_FFMPEG=ON
-          .
         cmake --build freerdp-build
         cmake --install freerdp-build
 
