@@ -32,6 +32,8 @@ jobs:
           
     - name: Build & package
       run: |        
+        rpmdev-setuptree
+        spectool -g -R freerdp.spec        
         rpmbuild -ba freerdp.spec
 
     - name: Upload Package
