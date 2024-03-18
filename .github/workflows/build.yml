@@ -149,7 +149,6 @@ jobs:
           -DWITH_FFMPEG=ON \
           -DWITH_SWSCALE=ON \
           -DWITH_DSP_FFMPEG=ON
-          -DUSE_UNWIND=OFF \
           -DWITH_WEBVIEW=OFF \
           .
         cmake --build freerdp-build
